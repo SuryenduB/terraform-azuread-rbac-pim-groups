@@ -17,13 +17,11 @@ variable "pim_group_display_name" {
 variable "pim_approver_group_object_id" {
   description = "The object id of the PIM approver group"
   type        = string
+  default     = null
   validation {
-
-    condition     = null || can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
+    condition     = var.pim_approver_group_object_id == null || can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
     error_message = "Object ID must be a valid GUID"
   }
-  default = null
-
 }
 
 variable "require_approval_to_activate" {
@@ -144,5 +142,3 @@ variable "assigned_roles" {
   default     = []
 
 }
-
-
