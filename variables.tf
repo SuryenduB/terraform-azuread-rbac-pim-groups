@@ -1,7 +1,7 @@
 variable "user_emails" {
   description = "List of user emails to be added to the PIM Group"
   type        = list(string)
-  default     = ["suryendub@03z3s.onmicrosoft.com"]
+  default     = []
 }
 
 variable "pim_group_display_name" {
@@ -22,7 +22,7 @@ variable "pim_approver_group_object_id" {
     condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
     error_message = "Object ID must be a valid GUID"
   }
-  default = "07f260f5-c680-4069-8da8-8f2b780ee107"
+
 }
 
 variable "require_approval_to_activate" {
