@@ -56,7 +56,10 @@ content: |-
     ## Example
 
     ```hcl
-    {{ include "examples/main.tf" }}
+    {{ include "examples/example1/main.tf" }}
+    ```
+    ```hcl
+    {{ include "examples/example2/main.tf" }}
     ```
     
 

@@ -1,3 +1,5 @@
+
+
 variable "groups" {
   type = list(
     object({
@@ -28,7 +30,7 @@ variable "groups" {
 
     {
       #displayName value
-      pim_group_display_name = "glob_gsec_pim_admin_roles_workplace"
+      pim_group_display_name = "glob_gsec_pim_admin_roles_intune_read_only_administrators"
 
       # The maximum duration for an active assignment. maximum time, in hours, that an activation request for a role assignment remains active before it expires. This value can be from one to 24 hours.
       activation_maximum_duration = "PT16H"
@@ -104,7 +106,8 @@ variable "groups" {
 
 module "rbac_pag" {
   for_each = { for idx, group in var.groups : idx => group }
-  source   = "./modules/rbac_pag"
+  source   = "SuryenduB/rbac-pim-groups/azuread"
+  version  = "0.0.9"
 
   # Required parameter
   pim_group_display_name = each.value.pim_group_display_name
