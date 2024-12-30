@@ -1,0 +1,69 @@
+image: swissgrc/azure-pipelines-terraform:latest
+definitions:
+  steps:
+    - step: &validate
+        name: Validate Terraform
+        script:
+          - terraform fmt -check
+          - terraform init
+          - terraform validate
+          - pipe: atlassian/git-secrets-scan:0.5.1
+            variables:
+              FILES_TO_SCAN_PATH: ./
+              FAIL_ON: "40"
+
+    - step: &plan
+        name: Plan Changes
+        deployment: Production
+        script:
+          - echo "Planning changes..."
+          - terraform init
+          - terraform plan
+    - step: &deployApply
+        name: Deploy and Apply
+        deployment: Production
+        script:
+          - chmod +x "./modules/rbac_pag/scripts/configure_authentication_context.sh"
+          - echo "Applying changes to Environment... $BITBUCKET_DEPLOYMENT_ENVIRONMENT"
+          - terraform init
+          - terraform plan
+          - terraform apply -auto-approve
+    - step: &destroy
+        name: Destroy
+        deployment: Production
+        script:
+          - echo "Destroying resources in Production..."
+          - terraform init
+          - terraform plan
+          - terraform destroy -auto-approve
+    - step: &tfdrift
+        name: Drift Detection
+        deployment: Production
+        script:
+          - terraform init
+          - terraform validate
+          - echo "Detecting Drift... "
+          - terraform plan -detailed-exitcode -no-color -out tfplan || export exitcode=$?
+          - echo "exitcode=$exitcode" 
+        
+         
+
+pipelines:
+  branches:
+    main:
+      - step: *validate
+      - step:
+          <<: *deployApply
+          deployment: Production
+          trigger: manual
+  pull-requests:
+    feature/*:
+      - step: *validate
+      - step: *plan
+
+  custom:
+    destroy:
+      - step: *destroy
+    tfdrift:
+      - step: *tfdrift
+      
