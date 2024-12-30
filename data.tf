@@ -10,7 +10,7 @@ data "azuread_user" "user" {
 }
 
 data "azuread_group" "pimapprover" {
-
+  count            = length(var.pim_approver_group_object_id) == 0 ? 1 : 0
   security_enabled = true
   object_id        = var.pim_approver_group_object_id
 }

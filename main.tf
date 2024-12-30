@@ -8,16 +8,16 @@ resource "azuread_group_role_management_policy" "pimpolicy1" {
     require_ticket_info                = var.require_ticket_to_activate
     require_multifactor_authentication = var.require_multifactor_authentication_to_activate ? "true" : null
     require_approval                   = var.require_approval_to_activate
-    approval_stage {
+    dynamic "approval_stage" {
+      for_each = var.require_approval_to_activate && var.pim_approver_group_object_id != null ? [1] : []
+      content {
+        primary_approver {
+          object_id = split("/", data.azuread_group.pimapprover.id)[2]
+          type      = "groupMembers"
+        }
+      }
 
-      primary_approver {
-        object_id = split("/", data.azuread_group.pimapprover.id)[2]
-        type      = "groupMembers"
-      }
-      primary_approver {
-        object_id = "1af529f2-ca2e-4b69-9964-231f20613dea" # Default approver
-        type      = "singleUser"
-      }
+
     }
 
   }
