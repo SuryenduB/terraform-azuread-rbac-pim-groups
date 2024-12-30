@@ -9,7 +9,7 @@ variable "pim_group_display_name" {
   type        = string
   validation {
 
-    condition     = null || can(regex("^(glob|hu|us|ua|de)_gsec_pim_admin_roles_.*$", var.pim_group_display_name))
+    condition     = can(regex("^(glob|hu|us|ua|de)_gsec_pim_admin_roles_.*$", var.pim_group_display_name))
     error_message = "The value must match the pattern ^(glob|hu|us|ua|de)_gsec_pim_admin_roles_.*$ Example : glob_gsec_pim_admin_roles_xyz"
   }
 }
@@ -19,7 +19,7 @@ variable "pim_approver_group_object_id" {
   type        = string
   validation {
 
-    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
+    condition     = null || can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
     error_message = "Object ID must be a valid GUID"
   }
   default = null
