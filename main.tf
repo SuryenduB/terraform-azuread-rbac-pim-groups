@@ -1,26 +1,109 @@
-# main.tf
+resource "azuread_group_role_management_policy" "pimpolicy1" {
+  group_id = split("/", azuread_group.pimgroup1.id)[2]
+  role_id  = "member"
 
+  activation_rules {
+    maximum_duration                   = var.activation_maximum_duration
+    require_justification              = var.require_justification_to_activate
+    require_ticket_info                = var.require_ticket_to_activate
+    require_multifactor_authentication = var.require_multifactor_authentication_to_activate ? "true" : null
+    require_approval                   = var.require_approval_to_activate
+    approval_stage {
 
-module "rbac_pag" {
-  for_each = { for idx, group in var.groups : idx => group }
-  source   = "./modules/rbac_pag"
+      primary_approver {
+        object_id = split("/", data.azuread_group.pimapprover.id)[2]
+        type      = "groupMembers"
+      }
+      primary_approver {
+        object_id = "1af529f2-ca2e-4b69-9964-231f20613dea" # Default approver
+        type      = "singleUser"
+      }
+    }
 
-  # Required parameter
-  pim_group_display_name = each.value.pim_group_display_name
+  }
 
-  # Optional parameters with coalesce for default handling
-  user_emails                                                    = coalesce(each.value.user_emails, [])
-  require_multifactor_authentication_to_activate                 = coalesce(each.value.require_multifactor_authentication_to_activate, true)
-  required_conditional_access_authentication_context_claim_value = lookup(each.value, "required_conditional_access_authentication_context_claim_value", "")
-  pim_approver_group_object_id                                   = coalesce(each.value.pim_approver_group_object_id, "07f260f5-c680-4069-8da8-8f2b780ee107")
-  require_approval_to_activate                                   = coalesce(each.value.require_approval_to_activate, false)
-  require_justification_to_activate                              = coalesce(each.value.require_justification_to_activate, true)
-  require_ticket_to_activate                                     = coalesce(each.value.require_ticket_to_activate, true)
-  allow_permanent_active_assignment                              = coalesce(each.value.allow_permanent_active_assignment, false)
-  allow_permanent_eligible_assignment                            = coalesce(each.value.allow_permanent_eligible_assignment, false)
-  activation_maximum_duration                                    = coalesce(each.value.activation_maximum_duration, "PT8H")
-  eligible_assignment_duration                                   = coalesce(each.value.eligible_assignment_duration, "P365D")
-  notification_level                                             = coalesce(each.value.notification_level, "All")
-  additional_notification_recipients                             = coalesce(each.value.additional_notification_recipients, [])
-  assigned_roles                                                 = coalesce(each.value.assigned_roles, [])
+  active_assignment_rules {
+    expiration_required                = var.allow_permanent_active_assignment
+    expire_after                       = var.allow_permanent_active_assignment ? var.active_assignment_duration : null
+    require_justification              = var.require_justification_active_assignment
+    require_multifactor_authentication = var.require_multifactor_authentication_active_assignment
+  }
+
+  eligible_assignment_rules {
+    expiration_required = var.allow_permanent_eligible_assignment
+    expire_after        = var.allow_permanent_eligible_assignment ? var.eligible_assignment_duration : null
+
+  }
+
+  notification_rules {
+    eligible_assignments {
+      approver_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+      admin_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+      assignee_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+    }
+    active_assignments {
+      approver_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+      admin_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+      assignee_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+
+    }
+    eligible_activations {
+      approver_notifications {
+        notification_level = var.notification_level
+        default_recipients = var.enable_default_notification_recipients
+
+      }
+      admin_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+      assignee_notifications {
+        notification_level    = var.notification_level
+        default_recipients    = var.enable_default_notification_recipients
+        additional_recipients = var.additional_notification_recipients
+      }
+
+    }
+
+  }
+
 }
+
+
+resource "azuread_privileged_access_group_eligibility_schedule" "assignment" {
+
+  for_each             = toset(local.user_ids)
+  group_id             = split("/", azuread_group.pimgroup1.id)[2]
+  principal_id         = split("/", each.value)[2]
+  assignment_type      = "member"
+  duration             = var.eligible_assignment_duration
+  permanent_assignment = var.allow_permanent_eligible_assignment && var.permanent_eligible_assignment
+
+}
+
+

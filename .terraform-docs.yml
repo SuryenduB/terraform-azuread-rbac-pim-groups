@@ -10,10 +10,20 @@ formatter: "markdown table"
 output:
   file: "README.md"
   mode: inject
-  template: |-
-    <!-- BEGIN_TF_DOCS -->
-    {{ .Content }}
-    <!-- END_TF_DOCS -->
+  content: |-
+    {{ .Header }}
+
+    ## Example
+
+    ```hcl
+    {{ include "examples/main.tf" }}
+    ```
+    
+
+    {{ .Inputs }}
+    {{ .Outputs }} 
+
+    
 
 # see https://terraform-docs.io/user-guide/configuration/settings/
 settings:
@@ -34,9 +44,24 @@ sort:
 
 # see https://terraform-docs.io/user-guide/configuration/sections/
 sections:
-  show:
-    - inputs
-    - outputs
+  sections:
+  hide:
+    - header
+    - footer
+
+# see https://terraform-docs.io/user-guide/configuration/content/
+content: |-
+    {{ .Header }}
+
+    ## Example
+
+    ```hcl
+    {{ include "examples/main.tf" }}
+    ```
+    
+
+    {{ .Inputs }}
+    {{ .Outputs }} 
 
 # see https://terraform-docs.io/user-guide/configuration/version/
 version: ">= 0.17.0, < 1.0.0"
