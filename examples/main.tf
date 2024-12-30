@@ -113,7 +113,7 @@ module "rbac_pag" {
   user_emails                                                    = coalesce(each.value.user_emails, [])
   require_multifactor_authentication_to_activate                 = coalesce(each.value.require_multifactor_authentication_to_activate, true)
   required_conditional_access_authentication_context_claim_value = lookup(each.value, "required_conditional_access_authentication_context_claim_value", "c1")
-  pim_approver_group_object_id                                   = coalesce(each.value.pim_approver_group_object_id, "07f260f5-c680-4069-8da8-8f2b780ee107")
+  pim_approver_group_object_id                                   = coalesce(each.value.pim_approver_group_object_id, null)
   require_approval_to_activate                                   = coalesce(each.value.require_approval_to_activate, false)
   require_justification_to_activate                              = coalesce(each.value.require_justification_to_activate, true)
   require_ticket_to_activate                                     = coalesce(each.value.require_ticket_to_activate, true)
