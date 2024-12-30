@@ -107,7 +107,7 @@ variable "groups" {
 module "rbac_pag" {
   for_each = { for idx, group in var.groups : idx => group }
   source   = "SuryenduB/rbac-pim-groups/azuread"
-  version  = "0.0.9"
+  version  = "0.0.10"
 
   # Required parameter
   pim_group_display_name = each.value.pim_group_display_name

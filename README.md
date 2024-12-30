@@ -6,7 +6,7 @@
 ```hcl
 module "rbac-pim-groups" {
   source  = "SuryenduB/rbac-pim-groups/azuread"
-  version = "0.0.9"
+  version = "0.0.10"
   # insert the 1 required variable here
   pim_group_display_name = "glob_gsec_pim_admin_roles_teams_administrators"
 
@@ -122,7 +122,7 @@ variable "groups" {
 module "rbac_pag" {
   for_each = { for idx, group in var.groups : idx => group }
   source   = "SuryenduB/rbac-pim-groups/azuread"
-  version  = "0.0.9"
+  version  = "0.0.10"
 
   # Required parameter
   pim_group_display_name = each.value.pim_group_display_name
