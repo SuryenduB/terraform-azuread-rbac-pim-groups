@@ -12,7 +12,7 @@ resource "azuread_group_role_management_policy" "pimpolicy1" {
       for_each = var.require_approval_to_activate && var.pim_approver_group_object_id != null ? [1] : []
       content {
         primary_approver {
-          object_id = split("/", data.azuread_group.pimapprover.id)[2]
+          object_id = split("/", data.azuread_group.pimapprover[0].id)[2]
           type      = "groupMembers"
         }
       }
