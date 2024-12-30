@@ -138,7 +138,6 @@ module "rbac_pag" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| pim\_approver\_group\_object\_id | The object id of the PIM approver group | `string` | n/a | yes |
 | pim\_group\_display\_name | value | `string` | n/a | yes |
 | activation\_maximum\_duration | The maximum duration for an active assignment. maximum time, in hours, that an activation request for a role assignment remains active before it expires. This value can be from one to 24 hours. | `string` | `"PT8H"` | no |
 | active\_assignment\_duration | This setting specifies the duration of the active assignment.Resource administrators can require that all active assignments have a specified start and end date. If Permanent active assignment is disabled | `bool` | `false` | no |
@@ -150,6 +149,7 @@ module "rbac_pag" {
 | enable\_default\_notification\_recipients | Specify Should the default recipients receive these notifications. You can turn off emails sent to default recipients by setting this to false. | `bool` | `true` | no |
 | notification\_level | Critical or All notifications.  For each type of email, you can set this to `Critical` to receive critical emails only. | `string` | `"All"` | no |
 | permanent\_eligible\_assignment | Specify if the Eligible assignment is permanent | `bool` | `false` | no |
+| pim\_approver\_group\_object\_id | The object id of the PIM approver group | `string` | `null` | no |
 | require\_approval\_to\_activate | Specify if approval for activation of an eligible assignment is required. If Yes you need to provide approver group | `bool` | `false` | no |
 | require\_justification\_active\_assignment | You can require that users enter a business justification when they create an active (as opposed to eligible) assignment. | `bool` | `true` | no |
 | require\_justification\_to\_activate | Specify if require users to enter a business justification when they activate the eligible assignment. | `bool` | `true` | no |

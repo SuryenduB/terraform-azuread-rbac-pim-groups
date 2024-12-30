@@ -22,6 +22,7 @@ variable "pim_approver_group_object_id" {
     condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.pim_approver_group_object_id))
     error_message = "Object ID must be a valid GUID"
   }
+  default = null
 
 }
 
