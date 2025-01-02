@@ -18,12 +18,12 @@ output:
     ```hcl
     {{ include "examples/main.tf" }}
     ```
-    
+
 
     {{ .Inputs }}
-    {{ .Outputs }} 
+    {{ .Outputs }}
 
-    
+
 
 # see https://terraform-docs.io/user-guide/configuration/settings/
 settings:
@@ -61,10 +61,10 @@ content: |-
     ```hcl
     {{ include "examples/example2/main.tf" }}
     ```
-    
+
 
     {{ .Inputs }}
-    {{ .Outputs }} 
+    {{ .Outputs }}
 
 # see https://terraform-docs.io/user-guide/configuration/version/
 version: ">= 0.17.0, < 1.0.0"

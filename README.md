@@ -175,5 +175,5 @@ module "rbac_pag" {
 
 | Name | Description |
 |------|-------------|
-| pimgroup1\_id | n/a | 
+| pimgroup1\_id | n/a |
 <!-- END_TF_DOCS -->

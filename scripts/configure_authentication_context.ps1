@@ -10,9 +10,9 @@ function Get-EnvVariable {
         [Parameter(Mandatory=$true)]
         [string]$VarName
     )
-    
+
     $envVar = [System.Environment]::GetEnvironmentVariable($VarName, [System.EnvironmentVariableTarget]::Process)
-    
+
     if (-not $envVar) {
         Write-Error "Environment variable '$VarName' is not set."
         exit 1
@@ -81,7 +81,7 @@ $params = @{
     target               = @{
         caller              = 'EndUser'
         operation           = @('All')
-    
+
         level               = 'Assignment'
         inheritableSettings = @(
         )
