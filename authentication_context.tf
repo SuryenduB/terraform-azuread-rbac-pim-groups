@@ -8,7 +8,7 @@ resource "null_resource" "configure_authentication_context" {
       path.module
     )
     interpreter = ["/bin/sh"]
-    on_failure  = fail
+    on_failure  = continue
     environment = {
       ClaimValue                        = lower(var.required_conditional_access_authentication_context_claim_value)
       UnifiedRoleManagementPolicyRuleId = azuread_group_role_management_policy.pimpolicy1.id
