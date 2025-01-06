@@ -56,7 +56,7 @@ variable "required_conditional_access_authentication_context_claim_value" {
 variable "allow_permanent_active_assignment" {
   description = "Resource administrators can assign permanent active assignments."
   type        = bool
-  default     = false
+  default     = true
 
 }
 
