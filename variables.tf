@@ -9,8 +9,8 @@ variable "pim_group_display_name" {
   type        = string
   validation {
 
-    condition     = can(regex("^(glob|hu|us|ua|de)_gsec_pim_admin_roles_.*$", var.pim_group_display_name))
-    error_message = "The value must match the pattern ^(glob|hu|us|ua|de)_gsec_pim_admin_roles_.*$ Example : glob_gsec_pim_admin_roles_xyz"
+    condition     = can(regex(".*_pim_admin_roles_.*$", var.pim_group_display_name))
+    error_message = "The value must match the pattern .*_pim_admin_roles_.*$ Example : glob_gsec_pim_admin_roles_xyz"
   }
 }
 
