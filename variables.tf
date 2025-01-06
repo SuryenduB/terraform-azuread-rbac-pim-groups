@@ -95,10 +95,24 @@ variable "activation_maximum_duration" {
   }
 
 }
+variable "activation_maximum_duration" {
+  description = "The maximum duration for an active assignment. maximum time, in hours, that an activation request for a role assignment remains active before it expires. This value can be from one to 24 hours."
+  type        = string
+  default     = "PT8H"
+  validation {
+    condition     = can(regex("^PT(1[0-9]|2[0-4]|[1-9])H$", var.activation_maximum_duration))
+    error_message = "The value must be in the format PTnH where n is between 1 and 9"
+  }
+
+}
 variable "active_assignment_duration" {
   description = "This setting specifies the duration of the active assignment.Resource administrators can require that all active assignments have a specified start and end date. If Permanent active assignment is disabled"
-  type        = bool
-  default     = false
+  type        = string
+  validation {
+    condition     = can(regex("^P(3[0-5][0-9]|36[0-5]|[1-9][0-9]?|(1[0-9]{2}|2[0-9]{2}|300)|[1-9])D$", var.active_assignment_duration))
+    error_message = "The value must be in the format PnD where n is between 1 and 365"
+  }
+  default = "P365D"
 }
 
 variable "eligible_assignment_duration" {

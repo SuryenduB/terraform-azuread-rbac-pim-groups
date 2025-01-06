@@ -24,14 +24,14 @@ resource "azuread_group_role_management_policy" "pimpolicy1" {
 
   active_assignment_rules {
     expiration_required                = var.allow_permanent_active_assignment
-    expire_after                       = var.allow_permanent_active_assignment ? var.active_assignment_duration : null
+    expire_after                       = var.allow_permanent_active_assignment ? null : var.active_assignment_duration
     require_justification              = var.require_justification_active_assignment
     require_multifactor_authentication = var.require_multifactor_authentication_active_assignment
   }
 
   eligible_assignment_rules {
     expiration_required = var.allow_permanent_eligible_assignment
-    expire_after        = var.allow_permanent_eligible_assignment ? var.eligible_assignment_duration : null
+    expire_after        = var.allow_permanent_eligible_assignment ? null : var.eligible_assignment_duration
 
   }
 
